@@ -16,7 +16,6 @@ class Worker:
         return [shift for shift in self.shifts if shift.date == date]
 
 class Shift:
-    """Shift model."""
     def __init__(self, id, date, start_time, end_time):
         self.id = id
         self.date = date

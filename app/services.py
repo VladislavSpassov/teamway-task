@@ -1,5 +1,5 @@
-from datetime import timedelta
 from .models import Worker, Shift
+from datetime import datetime
 
 class WorkPlanningService:
     def __init__(self):
@@ -12,15 +12,12 @@ class WorkPlanningService:
         self.workers[worker_id] = worker
         return worker
     
-    def create_shift(self, worker_id, date, start_time, end_time):
-        if end_time - start_time != timedelta(hours=8):
-            return None
-        for shift in self.workers[worker_id].shifts:
-            if shift.start_time == start_time:
-                return None
-        
+    def create_shift(self, worker_id, date, start_time, end_time):        
+        start_time = datetime.strptime(f'{start_time}:0:0', '%H:%M:%S').time()
+        end_time = datetime.strptime(f'{start_time.hour + 8}:0:0', '%H:%M:%S').time()
+        date = datetime.strptime(date, '%Y-%m-%d').date()
         shift_id = len(self.shifts) + 1
-        shift = Shift(shift_id, worker_id, date, start_time, end_time)
+        shift = Shift(shift_id, date, start_time, end_time)
         self.shifts[shift_id] = shift
         self.workers[worker_id].shifts.append(shift)
         return shift
