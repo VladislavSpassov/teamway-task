@@ -1,3 +1,4 @@
+from datetime import datetime
 from .models import Worker, Shift
 from datetime import datetime
 
@@ -17,7 +18,7 @@ class WorkPlanningService:
         end_time = datetime.strptime(f'{start_time.hour + 8}:0:0', '%H:%M:%S').time()
         date = datetime.strptime(date, '%Y-%m-%d').date()
         shift_id = len(self.shifts) + 1
-        shift = Shift(shift_id, date, start_time, end_time)
+        shift = Shift(shift_id, worker_id, date, start_time, end_time)
         self.shifts[shift_id] = shift
         self.workers[worker_id].shifts.append(shift)
         return shift
